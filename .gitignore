@@ -1,2 +1,3 @@
 venv-chiwater
 .idea
+*.pyc
