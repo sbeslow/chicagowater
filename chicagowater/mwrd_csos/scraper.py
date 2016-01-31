@@ -1,5 +1,5 @@
 import urllib2
-import time
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 mwrd_base_url = 'http://apps.mwrd.org/CSO/CSOEventSynopsisReport.aspx?passdate='
@@ -17,8 +17,8 @@ def scrape_date(date_str):
         columns = rows[row_num].findAll('td')
 
         columns = [column.text for column in columns]
-        start_time = time.strptime(date_str + " " + columns[2], "%m/%d/%Y %H:%M")
-        stop_time = time.strptime(date_str + " " + columns[3], "%m/%d/%Y %H:%M")
+        start_time = datetime.strptime(date_str + " " + columns[2], "%m/%d/%Y %H:%M")
+        stop_time = datetime.strptime(date_str + " " + columns[3], "%m/%d/%Y %H:%M")
         duration_split = columns[4].split(':')
         duration = 60 * int(duration_split[0]) + int(duration_split[1])
 
