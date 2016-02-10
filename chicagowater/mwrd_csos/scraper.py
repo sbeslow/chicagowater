@@ -17,15 +17,15 @@ def scrape_date(date_str):
         columns = rows[row_num].findAll('td')
 
         columns = [column.text for column in columns]
-        start_time = datetime.strptime(date_str + " " + columns[2], "%m/%d/%Y %H:%M")
-        stop_time = datetime.strptime(date_str + " " + columns[3], "%m/%d/%Y %H:%M")
+        start = datetime.strptime(date_str + " " + columns[2], "%m/%d/%Y %H:%M")
+        stop = datetime.strptime(date_str + " " + columns[3], "%m/%d/%Y %H:%M")
         duration_split = columns[4].split(':')
         duration = 60 * int(duration_split[0]) + int(duration_split[1])
 
         date_split = date_str.split("/")
         formatted_date = date_split[2] + "-" + date_split[0] + "-" + date_split[1]
-        events.append({"Location": columns[0], "Segment": columns[1], "Date": formatted_date, "StartTime": start_time,
-                       "EndTime": stop_time, "Duration": duration})
+        events.append({"location": columns[0], "segment": columns[1], "date": formatted_date, "start": start,
+                       "stop": stop, "duration": duration})
 
     return events
 
