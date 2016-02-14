@@ -12,3 +12,10 @@ def find_overlapping_times(c, event):
 
         ret_val.append(result)
     return ret_val
+
+
+def event_to_string(event):
+    ret_val = ""
+    for key in event:
+        ret_val += key + ": " + event[key] + ", "
+    return ret_val

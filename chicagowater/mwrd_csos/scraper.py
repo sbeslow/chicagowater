@@ -10,6 +10,10 @@ def scrape_date(date_str):
     url = mwrd_base_url + date_str
     soup = BeautifulSoup(urllib2.urlopen(url).read(), "html.parser")
     overflow_table = soup.find('table', id="DG1")
+
+    if overflow_table is None:
+        return []
+
     rows = overflow_table.findAll('tr')
 
     events = []

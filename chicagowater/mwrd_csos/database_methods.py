@@ -29,3 +29,11 @@ def select_from_db(c, sql):
                        "start": datetime.strptime(row[4], "%H:%M"),
                        "stop": datetime.strptime(row[5], "%H:%M"), "duration": row[6]})
     return events
+
+
+def delete_from_db(c, event):
+    if "id" not in event:
+        raise Exception("Event does not have an id")
+
+    sql = "DELETE FROM CSOs WHERE ID=" + event["id"]
+    c.execute(sql)
