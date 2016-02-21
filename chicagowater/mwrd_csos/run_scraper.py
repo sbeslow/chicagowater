@@ -77,5 +77,5 @@ def search_for_overlap(event):
 # event = {"date": "2015-9-18", "location": 'DS-M15',
 #          "start": datetime.strptime("3:30", "%H:%M"),
 #          "stop": datetime.strptime("3:45", "%H:%M"),}
-scrape_for_range("04/26/2007", "01/01/2012")
+scrape_for_range("01/05/2007", "01/06/2007")
 
