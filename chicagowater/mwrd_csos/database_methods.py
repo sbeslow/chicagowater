@@ -1,23 +1,15 @@
-from datetime import time, datetime
+from datetime import datetime
+
+from mwrd_csos.events import CsoEvent
 
 
 def insert_cso_into_db(c, event):
-    sql = "INSERT INTO CSOs (Location, Segment, Date, StartTime, EndTime, Duration) VALUES "
+    sql = event.insert_sql()
 
-    start = event["start"].strftime("%H:%M")
-    stop = event["stop"].strftime("%H:%M")
-
-    sql += "('{loc}',{seg},'{dt}','{st}','{sp}',{dur})".format(loc=event["location"],
-                                                                                    seg=event["segment"],
-                                                                                    dt=event["date"],
-                                                                                    st=start,
-                                                                                    sp=stop,
-                                                                                    dur=event["duration"])
     c.execute(sql)
 
 
 def select_from_db(c, sql):
-
     c.execute(sql)
     rows = c.fetchall()
     if len(rows) == 0:
@@ -25,15 +17,16 @@ def select_from_db(c, sql):
 
     events = []
     for row in rows:
-        events.append({"id": row[0], "location": row[1], "segment": row[2], "date": row[3],
-                       "start": datetime.strptime(row[4], "%H:%M"),
-                       "stop": datetime.strptime(row[5], "%H:%M"), "duration": row[6]})
+        events.append(
+            CsoEvent(row[1], row[2], row[3], datetime.strptime(row[4], "%H:%M"), datetime.strptime(row[5], "%H:%M"),
+                     row[6], row[0]))
+
     return events
 
 
 def delete_from_db(c, event):
-    if "id" not in event:
+    if event.event_id is None:
         raise Exception("Event does not have an id")
 
-    sql = "DELETE FROM CSOs WHERE ID=" + event["id"]
+    sql = "DELETE FROM CSOs WHERE ID=" + event.event_id
     c.execute(sql)

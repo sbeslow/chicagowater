@@ -3,6 +3,8 @@ import urllib2
 import datetime
 from bs4 import BeautifulSoup
 
+from mwrd_csos.events import CsoEvent
+
 mwrd_base_url = 'http://apps.mwrd.org/CSO/CSOEventSynopsisReport.aspx?passdate='
 
 
@@ -34,8 +36,7 @@ def scrape_date(date_str):
             if (start + datetime.timedelta(minutes=duration)) == stop:
                 date_split = date_str.split("/")
                 formatted_date = date_split[2] + "-" + date_split[0] + "-" + date_split[1]
-                events.append({"location": columns[0], "segment": columns[1], "date": formatted_date, "start": start,
-                               "stop": stop, "duration": duration})
+                events.append(CsoEvent(columns[0], columns[1], formatted_date, start, stop, duration))
             else:
                 maybe_end_date = start + datetime.timedelta(minutes=duration)
                 maybe_end_time_str = maybe_end_date.strftime("%H:%M")
@@ -54,17 +55,13 @@ def scrape_date(date_str):
                     formatted_date = date_iter.strftime("%Y-%m-%d")
                     new_duration = int((end_of_day-date_iter).seconds / 60)
 
-                    events.append(
-                        {"location": columns[0], "segment": columns[1], "date": formatted_date, "start": date_iter,
-                         "stop": end_of_day, "duration": new_duration})
+                    events.append(CsoEvent(columns[0], columns[1], formatted_date, date_iter, end_of_day, new_duration))
                     date_iter = end_of_day
                     end_of_day += datetime.timedelta(days=1)
 
                 formatted_date = date_iter.strftime("%Y-%m-%d")
                 new_duration = int((end_of_day-date_iter).seconds / 60)
-                events.append(
-                        {"location": columns[0], "segment": columns[1], "date": formatted_date, "start": date_iter,
-                         "stop": stop, "duration": new_duration})
+                events.append(CsoEvent(columns[0], columns[1], formatted_date, date_iter, stop, new_duration))
 
         except Exception as e:
             logging.error("Exception on %s row %i" % (date_str, row_num))
