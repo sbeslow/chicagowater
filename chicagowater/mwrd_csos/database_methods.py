@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from mwrd_csos.events import CsoEvent
 
@@ -17,9 +17,10 @@ def select_from_db(c, sql):
 
     events = []
     for row in rows:
+        start = datetime.datetime.strptime(row[3] + " " + row[4], "%Y-%m-%d %H:%M")
+        stop = datetime.datetime.strptime(row[3] + " " + row[5], "%Y-%m-%d %H:%M")
         events.append(
-            CsoEvent(row[1], row[2], row[3], datetime.strptime(row[4], "%H:%M"), datetime.strptime(row[5], "%H:%M"),
-                     row[6], row[0]))
+            CsoEvent(row[1], row[2], row[3], start, stop, row[6], row[0]))
 
     return events
 

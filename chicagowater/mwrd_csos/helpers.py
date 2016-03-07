@@ -7,7 +7,10 @@ def find_overlapping_times(c, event):
     results = select_from_db(c, sql)
     ret_val = []
     for result in results:
-        if result.start >= event.stop or result.stop <= event.start:
+        if result.start == event.start and result.stop == result.stop:
+            ret_val.append(result)
+            continue
+        elif result.start >= event.stop or result.stop <= event.start:
             continue
 
         ret_val.append(result)

@@ -1,7 +1,6 @@
 import datetime
 import logging
 import sqlite3
-
 from mwrd_csos.database_methods import insert_cso_into_db, delete_from_db
 from mwrd_csos.helpers import find_overlapping_times
 from scraper import scrape_date
@@ -46,15 +45,21 @@ def scrape_for_range(start_date_str, end_date_str):
         for event in events:
 
             try:
+                # Check to see if there are overlapping times.  This should not be needed, but there are
+                # several inconsistencies on the MWRD webpages
                 overlapping = find_overlapping_times(c, event)
                 if len(overlapping) > 0:
-                    logging.error("Found overlapping overflows.  Original event is: %s\n.  Overlapping events: " % (
-                        event.to_string()))
-                    for overlapper in overlapping:
-                        logging.error(overlapper.to_string())
-                        delete_from_db(overlapper)
+                    for o_event in overlapping:
+                        if o_event.start == event.start and o_event.stop == event.stop:
+                            continue
+                        logging.error(
+                            "Found overlapping overflows.  Original event is: %s\n.  Overlapping event: %s" % (
+                                event.to_string(), o_event.to_string()))
+                        delete_from_db(o_event)
 
-                insert_cso_into_db(c, event)
+                        insert_cso_into_db(c, event)
+                else:
+                    insert_cso_into_db(c, event)
 
             except Exception as e:
                 logging.exception(e)
@@ -73,4 +78,5 @@ def search_for_overlap(event):
     conn.close()
     return a
 
-scrape_for_range("01/01/2007", "01/01/2008")
+
+scrape_for_range("01/04/2007", "01/05/2007")
