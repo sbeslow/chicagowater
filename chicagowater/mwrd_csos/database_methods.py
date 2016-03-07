@@ -29,5 +29,5 @@ def delete_from_db(c, event):
     if event.event_id is None:
         raise Exception("Event does not have an id")
 
-    sql = "DELETE FROM CSOs WHERE ID=" + event.event_id
+    sql = "DELETE FROM CSOs WHERE ID=" + str(event.event_id)
     c.execute(sql)

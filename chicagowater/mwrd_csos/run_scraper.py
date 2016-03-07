@@ -55,7 +55,7 @@ def scrape_for_range(start_date_str, end_date_str):
                         logging.error(
                             "Found overlapping overflows.  Original event is: %s\n.  Overlapping event: %s" % (
                                 event.to_string(), o_event.to_string()))
-                        delete_from_db(o_event)
+                        delete_from_db(c, o_event)
 
                         insert_cso_into_db(c, event)
                 else:
@@ -79,4 +79,4 @@ def search_for_overlap(event):
     return a
 
 
-scrape_for_range("01/04/2007", "01/05/2007")
+scrape_for_range("01/01/2008", "01/01/2009")
