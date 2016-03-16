@@ -22,3 +22,10 @@ class CsoEvent(object):
     def to_string(self):
         return "ID: %s  Location: %s  Segment:  %s  Date: %s  Start:  %s  Stop: %s  Duration %s" % (
             self.event_id, self.location, self.segment, self.date_str, self.start, self.stop, self.duration)
+
+    def equals(self, other_cso_event):
+        if self.location != other_cso_event.location or self.segment != other_cso_event.segment or\
+                self.date_str != other_cso_event.date_str or self.start != other_cso_event.start or\
+                self.stop != other_cso_event.stop or self.duration != other_cso_event.duration:
+            return False
+        return True
