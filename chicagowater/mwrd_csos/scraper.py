@@ -53,14 +53,14 @@ def scrape_date(date_str):
 
                 while end_of_day < stop:
                     formatted_date = date_iter.strftime("%Y-%m-%d")
-                    new_duration = int((end_of_day-date_iter).seconds / 60)
+                    new_duration = int((end_of_day-date_iter).total_seconds() / 60)
 
                     events.append(CsoEvent(columns[0], columns[1], formatted_date, date_iter, end_of_day, new_duration))
                     date_iter = end_of_day
                     end_of_day += datetime.timedelta(days=1)
 
                 formatted_date = date_iter.strftime("%Y-%m-%d")
-                new_duration = int((end_of_day-date_iter).seconds / 60)
+                new_duration = int((maybe_end_date-date_iter).total_seconds() / 60)
                 events.append(CsoEvent(columns[0], columns[1], formatted_date, date_iter, stop, new_duration))
 
         except Exception as e:
