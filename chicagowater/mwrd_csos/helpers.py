@@ -1,4 +1,4 @@
-from mwrd_csos.database_methods import select_from_db
+from database_methods import select_from_db
 
 
 def find_overlapping_times(c, event):

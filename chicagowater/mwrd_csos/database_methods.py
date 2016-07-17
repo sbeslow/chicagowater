@@ -1,6 +1,6 @@
 import datetime
 
-from mwrd_csos.events import CsoEvent
+from events import CsoEvent
 
 
 def insert_cso_into_db(c, event):

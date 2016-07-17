@@ -3,7 +3,7 @@ import urllib2
 import datetime
 from bs4 import BeautifulSoup
 
-from mwrd_csos.events import CsoEvent
+from events import CsoEvent
 
 mwrd_base_url = 'http://apps.mwrd.org/CSO/CSOEventSynopsisReport.aspx?passdate='
 

@@ -1,8 +1,12 @@
 import datetime
 import logging
 import sqlite3
-from mwrd_csos.database_methods import insert_cso_into_db, delete_from_db
-from mwrd_csos.helpers import find_overlapping_times
+
+from database_methods import insert_cso_into_db
+
+from database_methods import delete_from_db
+
+from helpers import find_overlapping_times
 from scraper import scrape_date
 
 sqlite_file = 'cso-data.db'
@@ -79,4 +83,4 @@ def search_for_overlap(event):
     return a
 
 
-scrape_for_range("01/01/2007", "01/01/2008")
+scrape_for_range("01/01/2007", "07/07/2016")
